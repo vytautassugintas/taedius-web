@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
-import { postLogin } from '../../../api';
+import { postLogin } from '../../api';
 
 import './LoginForm.css';
 
@@ -10,13 +10,14 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       email: undefined,
-      password: undefined
+      password: undefined,
+      redirectHome: false
     };
   }
 
   handleInputChange = event => {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.value;
     const name = target.name;
 
     this.setState({
@@ -26,16 +27,28 @@ class LoginForm extends Component {
   }
 
   handleSubmit = () => {
-    console.log(this.state);
     postLogin(this.state)
+      .then(succes => {
+        console.log(succes);
+        this.setState({redirectHome: true});
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   render() {
+    const {redirectHome} = this.state;
+
+    if (redirectHome) {
+      return <Redirect to='/home' />;
+    }
+
     return (
       <Form className='margin-top--md'>
         <Form.Field>
           <label>Email</label>
-          <input name='email' value={this.state.email} onChange={this.handleInputChange} type='email' />
+          <input name='email' type='text' value={this.state.email} onChange={this.handleInputChange} />
         </Form.Field>
         <Form.Field>
           <label>Password</label>

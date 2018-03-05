@@ -8,6 +8,10 @@ body {
   text-align: center;
 }
 
+.error--text {
+  color: #A52A2A;
+}
+
 .margin-top--md {
   margin-top: 1em;
 }

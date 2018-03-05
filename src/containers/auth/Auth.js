@@ -21,7 +21,6 @@ class Auth extends Component {
       })
       .catch(err => {
         const {pathname} = this.props.location;
-        console.log(pathname !== '/login');
         if (pathname !== '/login') {
           this.setState({redirectLogin: true});
         }

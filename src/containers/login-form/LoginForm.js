@@ -24,7 +24,6 @@ class LoginForm extends Component {
     this.setState({
       [name]: value
     });
-
   }
 
   handleSubmit = () => {
@@ -90,7 +89,7 @@ class LoginForm extends Component {
   }
 }
 
-const Error = ({error = []}) => {
+export const Error = ({error = []}) => {
   return error.length ? <span className='error--text'>{error[0].msg}</span> : null;
 }
 

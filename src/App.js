@@ -29,31 +29,14 @@ const NoMatch = ({ location }) => (
   </div>
 );
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      fakeAuth.isAuthenticated ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
-  />
-);
-
 class App extends Component {
   state = {
-    isLoading: true
+    isLoading: true,
+    redirectHome: false
   }
   componentDidMount(){
     getAccount()
-      .then(() => fakeAuth.authenticate)
+      .then(() => this.setState({redirectHome: true}))
       .catch(() => fakeAuth.signout)
       .finally(() => {
         this.setState({
@@ -63,9 +46,12 @@ class App extends Component {
   };
   
   render() {
-    if(this.state.isLoading){
+    const {redirectHome, isLoading} = this.state;
+
+    if(isLoading){
       return null;
     }
+
     return (
       <Router>
          <Switch>

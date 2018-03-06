@@ -63,3 +63,17 @@ export function getGroups(){
       })
   })
 }
+
+export function getGroup(groupId) {
+  console.log(groupId);
+  console.log(host + '/group/' + groupId);
+  return new Promise((resolve, reject) => {
+    fetch(host + '/group/' + groupId, {credentials: 'include'})
+      .then(response => {
+        if(!response.ok){
+          return reject({err: response.statusText});
+        }
+        return response.json().then(resolve);
+      })
+  })
+}

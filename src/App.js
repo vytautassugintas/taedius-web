@@ -6,6 +6,7 @@ import './App.css';
 import HomeContainer from './containers/home/Home';
 import LoginForm from './containers/login-form/LoginForm';
 import SignUpForm from './containers/signup-form/SignUpForm';
+import Group from './containers/home/group/Group';
 
 import { getAccount } from './api';
 

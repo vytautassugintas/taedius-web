@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Container, Input, Button, Icon, List } from 'semantic-ui-react'
-
 import {getAccount, getGroups, createGroup} from '../../api';
+import Group from './group/Group';
 
 class HomeContainer extends Component {
   state = {
@@ -50,6 +50,10 @@ class HomeContainer extends Component {
       })
   }
 
+  handleLinkClick = group => {
+    this.props.history.push('/home/group/' + group._id);
+  }
+
   render() {
     const {isLoading, user, groups} = this.state;
 
@@ -79,10 +83,11 @@ class HomeContainer extends Component {
           <List.Header>Groups</List.Header>
             {
               groups.map(group => (
-                <List.Item key={group._id} as='a'>{group.name}</List.Item>    
+                <List.Item key={group._id} onClick={() => this.handleLinkClick(group)} as='a'>{group.name}</List.Item>    
               ))
             }
           </List>
+          <Route path="/home/group/:id" component={Group} />
         </Container>
       );
   }

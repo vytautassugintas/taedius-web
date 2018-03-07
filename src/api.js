@@ -65,10 +65,44 @@ export function getGroups(){
 }
 
 export function getGroup(groupId) {
-  console.log(groupId);
-  console.log(host + '/group/' + groupId);
   return new Promise((resolve, reject) => {
     fetch(host + '/group/' + groupId, {credentials: 'include'})
+      .then(response => {
+        if(!response.ok){
+          return reject({err: response.statusText});
+        }
+        return response.json().then(resolve);
+      })
+  })
+}
+
+export function addTask(options) {
+  return new Promise((resolve, reject) => {
+    fetch(host + '/group/task/add', {
+      method: 'post',
+      credentials: 'include',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        title: options.title,
+        points: options.points,
+        groupId: options.groupId
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response.errors){
+        return reject(response);
+      }
+      return resolve(response);
+    })
+  })
+}
+
+export function getTasks(groupId) {
+  return new Promise((resolve, reject) => {
+    fetch(host + '/group/' + groupId + '/tasks', {credentials: 'include'})
       .then(response => {
         if(!response.ok){
           return reject({err: response.statusText});

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Container, Input, Button, Icon, List } from 'semantic-ui-react'
-
-import {getAccount, getGroup, createGroup} from '../../../api';
+import { getAccount, getGroup, createGroup } from '../../../api';
+import Task from './task/Task';
 
 class Group extends Component {
   state = {
@@ -11,22 +11,15 @@ class Group extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const currentId = this.props.match.params.id
-    const nextId = nextProps
-
-    if (currentId !== nextId) {
-      getGroup(this.props.match.params.id)
-      .then(group => {
-        console.log('got group', group);
-        this.setState({group: group, isLoading: false})
-      });
-    }
+    getGroup(nextProps.match.params.id)
+    .then(group => {
+      this.setState({group: group, isLoading: false})
+    });
   }
 
   componentDidMount(){
     getGroup(this.props.match.params.id)
       .then(group => {
-        console.log('got group', group);
         this.setState({group: group, isLoading: false})
       });
   }
@@ -46,6 +39,10 @@ class Group extends Component {
     : (
       <div>
         This is group: {group._id}
+        {
+
+        }
+        <Task groupId={group._id}/>
       </div>
     );
   }

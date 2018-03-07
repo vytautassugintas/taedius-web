@@ -5,14 +5,21 @@ import { Container, Input, Button, Icon, List } from 'semantic-ui-react'
 import { addTask, getTasks } from '../../../../api';
 
 class Task extends Component {
-  state = {
-    isLoading: true,
-    title: undefined,
-    points: undefined,
-    tasks: []
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoading: true,
+      title: '',
+      points: '',
+      tasks: []
+    }
   }
 
   componentWillReceiveProps(nextProps) {
+    this.setState({
+      title: '',
+      points: '',
+    })
     getTasks(nextProps.groupId)
       .then(result => this.setState({
         tasks: result.tasks
@@ -28,6 +35,7 @@ class Task extends Component {
     this.setState({
       [name]: value
     });
+    event.preventDefault();
   }
 
   handleAddClick = () => {
@@ -37,10 +45,16 @@ class Task extends Component {
       points: points,
       groupId: this.props.groupId
     })
+    .then(() => {
+      this.setState({
+        title: '',
+        points: '',
+      })
+    })
   };
 
   render() {
-    const { tasks } = this.state;
+    const { title, points, tasks } = this.state;
 
     return (
       <div>
@@ -53,17 +67,17 @@ class Task extends Component {
               ))
             }
         </List>
-        <Input
+          <Input
             fluid
             name='title'
-            value={this.state.name}
+            value={title}
             onChange={this.handleInputChange}
             placeholder='Add task'
             className='margin-top--md'
           />
           <Input
             name='points'
-            value={this.state.name}
+            value={points}
             onChange={this.handleInputChange}
             placeholder='Points'
             className='margin-top--md'

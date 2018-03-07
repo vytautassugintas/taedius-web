@@ -8,7 +8,7 @@ class HomeContainer extends Component {
   state = {
     user: undefined,
     groups: [],
-    name: undefined,
+    name: '',
     isLoading: true
   }
 

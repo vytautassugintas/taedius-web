@@ -12,16 +12,12 @@ class Group extends Component {
 
   componentWillReceiveProps(nextProps) {
     getGroup(nextProps.match.params.id)
-    .then(group => {
-      this.setState({group: group, isLoading: false})
-    });
+      .then(group => this.setState({group: group, isLoading: false}));
   }
 
   componentDidMount(){
     getGroup(this.props.match.params.id)
-      .then(group => {
-        this.setState({group: group, isLoading: false})
-      });
+      .then(group => this.setState({group: group, isLoading: false}));
   }
 
   handleInputChange = event => {

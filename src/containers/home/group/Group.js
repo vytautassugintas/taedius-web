@@ -5,42 +5,33 @@ import { getAccount, getGroup, createGroup } from '../../../api';
 import Task from './task/Task';
 
 class Group extends Component {
-  state = {
-    isLoading: true,
-    group: {}
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoading: true,
+      group: {}
+    }
   }
-
-  componentWillReceiveProps(nextProps) {
-    getGroup(nextProps.match.params.id)
-      .then(group => this.setState({group: group, isLoading: false}));
-  }
-
+  
   componentDidMount(){
     getGroup(this.props.match.params.id)
       .then(group => this.setState({group: group, isLoading: false}));
-  }
-
-  handleInputChange = event => {
-    const {name, value} = event.target;
-    this.setState({
-      [name]: value
-    });
   }
 
   render() {
     const {group, isLoading} = this.state;
 
     return isLoading
-    ? null
-    : (
-      <div>
-        This is group: {group._id}
-        {
+      ? null
+      : (
+        <div>
+          This is group: {group._id}
+          {
 
-        }
-        <Task groupId={group._id}/>
-      </div>
-    );
+          }
+          <Task groupId={group._id}/>
+        </div>
+      );
   }
 }
 

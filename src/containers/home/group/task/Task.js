@@ -27,7 +27,10 @@ class Task extends Component {
   }
 
   componentDidMount(){
-
+    getTasks(this.props.groupId)
+      .then(result => this.setState({
+        tasks: result.tasks
+      }))
   }
 
   handleInputChange = event => {

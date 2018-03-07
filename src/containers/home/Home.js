@@ -3,13 +3,18 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Container, Input, Button, Icon, List } from 'semantic-ui-react'
 import {getAccount, getGroups, createGroup} from '../../api';
 import Group from './group/Group';
+import GroupList from './group-list/GroupList';
 
 class HomeContainer extends Component {
-  state = {
-    user: undefined,
-    groups: [],
-    name: '',
-    isLoading: true
+  constructor(props){
+    super(props);
+    this.state = {
+      user: undefined,
+      groups: [],
+      selectedGroup: {},
+      name: '',
+      isLoading: true
+    }
   }
 
   componentDidMount(){
@@ -32,10 +37,6 @@ class HomeContainer extends Component {
       })
   }
 
-  updateGroups(){
-    getGroups().then(groups => this.setState({groups: groups}))
-  }
-
   handleInputChange = event => {
     const {name, value} = event.target;
     this.setState({
@@ -51,12 +52,17 @@ class HomeContainer extends Component {
   }
 
   handleLinkClick = group => {
+    this.setState({selectedGroup: group})
     this.props.history.push('/home/group/' + group._id);
+  }
+
+  updateGroups(){
+    getGroups().then(groups => this.setState({groups: groups}))
   }
 
   render() {
     const {isLoading, user, groups} = this.state;
-
+    
     return isLoading
       ? null
       : (
@@ -79,14 +85,13 @@ class HomeContainer extends Component {
               Create
             </Button>
           </div>
-          <List link>
-          <List.Header>Groups</List.Header>
-            {
-              groups.map(group => (
-                <List.Item key={group._id} onClick={() => this.handleLinkClick(group)} as='a'>{group.name}</List.Item>    
-              ))
-            }
-          </List>
+          <Route exact path="/home" render={ routeProps => 
+            <GroupList {...routeProps} 
+              isLoading={isLoading} 
+              groups={groups} 
+              handleLinkClick={this.handleLinkClick}
+            />} 
+          />
           <Route path="/home/group/:id" component={Group} />
         </Container>
       );

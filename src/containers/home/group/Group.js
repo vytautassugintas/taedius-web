@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { Container, Input, Button, Icon, List } from 'semantic-ui-react'
-import { getAccount, getGroup, createGroup } from '../../../api';
+import { getGroup } from '../../../api';
 import Task from './task/Task';
 
 class Group extends Component {

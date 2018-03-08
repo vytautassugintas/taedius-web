@@ -76,6 +76,21 @@ export function getGroup(groupId) {
   })
 }
 
+export function deleteGroup(groupId) {
+  return new Promise((resolve, reject) => {
+    fetch(host + '/group/' + groupId, {
+      method: 'delete',
+      credentials: 'include'
+    })
+    .then(response => {
+      if(!response.ok){
+        return reject({err: response.statusText});
+      }
+      return response.json().then(resolve);
+    })
+  })
+}
+
 export function addTask(options) {
   return new Promise((resolve, reject) => {
     fetch(host + '/group/task/add', {

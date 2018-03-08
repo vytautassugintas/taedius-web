@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Button, Icon, List } from 'semantic-ui-react'
-import { getGroups, createGroup } from '../../../api';
+import { getGroups, createGroup, deleteGroup } from '../../../api';
 
 class GroupList extends Component {
   constructor(props){
@@ -19,6 +19,13 @@ class GroupList extends Component {
 
   handleCreateClick = () => {
     createGroup({name: this.state.name})
+      .then(() => {
+        this.updateGroups();
+      })
+  }
+
+  handleRemoveClick = groupId => {
+    deleteGroup(groupId)
       .then(() => {
         this.updateGroups();
       })
@@ -63,15 +70,27 @@ class GroupList extends Component {
               Create
             </Button>
           </div>
-          <List link>
+          <List divided link verticalAlign='middle'> 
             <List.Header>Groups</List.Header>
               {
                 groups.map(group => (
-                  <List.Item 
-                    as='a'                
-                    key={group._id}
-                    onClick={() => this.handleLinkClick(group)}>
-                    {group.name}
+                  <List.Item key={group._id}>
+                  <List.Content floated='right'>
+                    <Button 
+                      basic
+                      icon
+                      onClick={() => this.handleRemoveClick(group._id)}>
+                      <Icon name='trash' />
+                    </Button>
+                  </List.Content>
+                  <List.Content>
+                    <List.Header 
+                      as='a'
+                      onClick={() => this.handleLinkClick(group)}>
+                      {group.name}
+                    </List.Header>
+                    Tasks: {group.tasks.length} | Members: {group.users.length}
+                  </List.Content>
                   </List.Item>    
                 ))
               }

@@ -115,6 +115,29 @@ export function addTask(options) {
   })
 }
 
+export function removeTask(options) {
+  return new Promise((resolve, reject) => {
+    fetch(host + '/group/task/remove', {
+      method: 'post',
+      credentials: 'include',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        groupId: options.groupId,
+        taskId: options.taskId
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response.errors){
+        return reject(response);
+      }
+      return resolve(response);
+    })
+  })
+}
+
 export function getTasks(groupId) {
   return new Promise((resolve, reject) => {
     fetch(host + '/group/' + groupId + '/tasks', {credentials: 'include'})

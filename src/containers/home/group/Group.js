@@ -22,11 +22,7 @@ class Group extends Component {
     return isLoading
       ? null
       : (
-        <div>
-          This is group: {group._id}
-          {
-
-          }
+        <div> 
           <Task groupId={group._id}/>
         </div>
       );

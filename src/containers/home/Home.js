@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Container, Menu } from 'semantic-ui-react'
 import { getAccount } from '../../api';
 import Group from './group/Group';
 import GroupList from './group-list/GroupList';
@@ -10,9 +10,12 @@ class HomeContainer extends Component {
     super(props);
     this.state = {
       user: undefined,
-      isLoading: true
+      isLoading: true,
+      activeItem: ''
     }
   }
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   componentDidMount(){
     getAccount()
@@ -34,14 +37,12 @@ class HomeContainer extends Component {
   }
 
   render() {
-    const { isLoading, user } = this.state;
+    const { isLoading, user, activeItem } = this.state;
     
     return isLoading
       ? null
       : (
         <Container>
-          <p>This is home</p>
-          <p>Profile: {user.email}</p>
           <Route exact path="/home" component={GroupList} />
           <Route path="/home/group/:id" component={Group} />
         </Container>

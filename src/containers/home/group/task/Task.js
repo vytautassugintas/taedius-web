@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Input, Button, Icon, List, Progress, Modal, Header, Form, Checkbox } from 'semantic-ui-react'
 import { addTask, getTasks, removeTask } from '../../../../api';
+import ModalAddTask from '../modal-add-task/ModalAddTask';
 
 class Task extends Component {
   constructor(props){
@@ -33,32 +34,11 @@ class Task extends Component {
       }))
   }
 
-  handleInputChange = event => {
-    const {name, value} = event.target;
-    this.setState({
-      [name]: value
-    });
-    event.preventDefault();
-  }
-
-  handleAddClick = () => {
-    const {title, points} = this.state;
-    addTask({
-      title: title,
-      points: points,
-      groupId: this.props.groupId
-    })
-    .then(() => {
-      this.setState({
-        title: '',
-        points: '',
-      })
+  handleAdd = () => { 
       getTasks(this.props.groupId)
       .then(result => this.setState({
         tasks: result.tasks
       }))
-      this.closeModal();
-    })
   };
 
   handleRemoveClick = (groupId, taskId) => {
@@ -73,18 +53,6 @@ class Task extends Component {
     })
   }
 
-  openModal = () => {
-    this.setState({
-      isModalOpen: true
-    })
-  }
-
-  closeModal = () => {
-      this.setState({
-        isModalOpen: false
-      })
-  }
-
   render() {
     const { title, points, tasks, isModalOpen } = this.state;
 
@@ -93,40 +61,9 @@ class Task extends Component {
         <div className='margin__horizontal--md'>
           <Progress percent={this.state.percent} indicating />
         </div>
-        <Button onClick={this.openModal}>Add task</Button>
-        <Modal 
-          open={isModalOpen}
-          onOpen={this.openModal}
-          onClose={this.closeModal}
-          closeIcon>
-          <Modal.Header>Add task</Modal.Header>
-          <Modal.Content>
-            <Input
-              fluid
-              name='title'
-              value={title}
-              onChange={this.handleInputChange}
-              placeholder='Add task'
-              className='margin-top--md'
-            />
-            <Input
-              name='points'
-              value={points}
-              onChange={this.handleInputChange}
-              placeholder='Points'
-              className='margin-top--md'
-            />
-            <div className='margin-top--md'>
-              <Button 
-                icon
-                labelPosition='left'
-                onClick={this.handleAddClick}>
-                <Icon name='plus' />
-                Create
-              </Button>
-            </div>
-          </Modal.Content>
-        </Modal>
+        <ModalAddTask 
+          groupId={this.props.groupId}
+          onAdd={this.handleAdd} />
         
         <List>
         <List.Header>Tasks</List.Header>
@@ -134,7 +71,8 @@ class Task extends Component {
               tasks.map(task => (
                 <List.Item key={task._id}>
                 <List.Content floated='right'>
-                  <Button 
+                  <Button
+                    className='button--no-border'
                     basic
                     icon
                     onClick={() => this.handleRemoveClick(this.props.groupId, task._id)}

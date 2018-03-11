@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button, Icon, List, Card } from 'semantic-ui-react'
+import { Input, Button, Icon, List, Card, Transition } from 'semantic-ui-react'
 import { getGroups, createGroup, deleteGroup } from '../../../api';
 
 class GroupList extends Component {
@@ -63,7 +63,9 @@ class GroupList extends Component {
           />
           <div className='margin-top--md'>
             <Button 
+              fluid
               icon
+              positive
               labelPosition='left'
               onClick={this.handleCreateClick}>
               <Icon name='plus' />
@@ -71,32 +73,32 @@ class GroupList extends Component {
             </Button>
           </div>
           <div className='margin-top--md'>
-            <Card.Group>
+          <Card.Group>
             {
               groups.map(group => (
-              <Card>
-                <Card.Content>
-                <Button 
-                    className='button--no-border'
-                    floated='right'
-                    basic
-                    icon
-                    onClick={() => this.handleRemoveClick(group._id)}>
-                    <Icon name='trash' />
-                  </Button>
-                  <Card.Header as='a' onClick={() => this.handleLinkClick(group)} content={group.name} />
-                </Card.Content>
-                <Card.Content extra>
-                  <a>
-                    <Icon name='user' />
-                    {group.users.length} Members
-                  </a>
-                  <a>
-                  <Icon name='tasks' />
-                    {group.tasks.length} Tasks
-                  </a>
-                </Card.Content>
-              </Card>
+                <Card fluid raised>
+                  <Card.Content>
+                  <Button 
+                      className='button--no-border'
+                      floated='right'
+                      basic
+                      icon
+                      onClick={() => this.handleRemoveClick(group._id)}>
+                      <Icon name='trash' />
+                    </Button>
+                    <Card.Header as='a' onClick={() => this.handleLinkClick(group)} content={group.name} />
+                  </Card.Content>
+                  <Card.Content extra>
+                    <p>
+                      <Icon name='user' />
+                      {group.users.length} Members
+                    </p>
+                    <p>
+                    <Icon name='tasks' />
+                      {group.tasks.length} Tasks
+                    </p>
+                  </Card.Content>
+                </Card>
               ))
             }
             </Card.Group>

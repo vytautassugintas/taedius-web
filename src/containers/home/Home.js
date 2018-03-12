@@ -4,6 +4,7 @@ import { Container, Menu } from 'semantic-ui-react'
 import { getAccount } from '../../api';
 import Group from './group/Group';
 import GroupList from './group-list/GroupList';
+import Auth from '../auth/Auth';
 
 class HomeContainer extends Component {
   constructor(props){
@@ -43,6 +44,7 @@ class HomeContainer extends Component {
       ? null
       : (
         <Container>
+          <Auth />
           <Route exact path="/home" component={GroupList} />
           <Route path="/home/group/:id" component={Group} />
         </Container>

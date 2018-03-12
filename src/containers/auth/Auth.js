@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
-import LoginForm from './login-form/LoginForm';
-import SignUpForm from './signup-form/SignUpForm';
 import { getAccount } from '../../api';
 
 class Auth extends Component {
@@ -15,15 +13,13 @@ class Auth extends Component {
   }
   
   componentDidMount(){
+    console.log("MOUNT")
     getAccount()
       .then(succes => {
         this.setState({redirectHome: true});
       })
       .catch(err => {
-        const {pathname} = this.props.location;
-        if (pathname !== '/login') {
-          this.setState({redirectLogin: true});
-        }
+        this.setState({redirectLogin: true});
       })
   }
 
@@ -38,12 +34,7 @@ class Auth extends Component {
       return <Redirect to='/login' />;
     }
 
-    return (
-      <Container>
-        <Route path='/login' component={LoginForm}/>
-        <Route path='/signup' component={SignUpForm}/>
-      </Container>
-    );
+    return null;
   }
 }
 

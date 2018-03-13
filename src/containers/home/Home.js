@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
 import { Container, Menu } from 'semantic-ui-react'
-import { getAccount } from '../../api';
+import { getAccount, logout } from '../../api';
 import Group from './group/Group';
 import GroupList from './group-list/GroupList';
 import Auth from '../auth/Auth';
+import Notification from './notification/Notification'
 
 class HomeContainer extends Component {
   constructor(props){
@@ -37,6 +38,12 @@ class HomeContainer extends Component {
       })
   }
 
+  logout = () => {
+    logout().then(() => {
+      this.props.history.replace('/login');
+    })
+  }
+
   render() {
     const { isLoading, user, activeItem } = this.state;
     
@@ -44,7 +51,11 @@ class HomeContainer extends Component {
       ? null
       : (
         <Container>
+          <button onClick={this.logout}>
+            Logout
+          </button>
           <Auth />
+          <Notification />
           <Route exact path="/home" component={GroupList} />
           <Route path="/home/group/:id" component={Group} />
         </Container>

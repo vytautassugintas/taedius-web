@@ -20,9 +20,45 @@ export function postLogin(options){
   })
 }
 
+export function logout(){
+  return new Promise((resolve, reject) => {
+    fetch(host + '/logout', {credentials: 'include'})
+      .then(response => {
+        if(!response.ok){
+          reject({err: response.statusText});
+        }
+        response.json().then(resolve);
+      })
+  })
+}
+
 export function getAccount(){
   return new Promise((resolve, reject) => {
     fetch(host + '/account', {credentials: 'include'})
+      .then(response => {
+        if(!response.ok){
+          reject({err: response.statusText});
+        }
+        response.json().then(resolve);
+      })
+  })
+}
+
+export function getNotifications(){
+  return new Promise((resolve, reject) => {
+    fetch(host + '/account/notifications', {credentials: 'include'})
+      .then(response => {
+        if(!response.ok){
+          reject({err: response.statusText});
+        }
+        response.json().then(resolve);
+      })
+  })
+}
+
+export function getEvents(){
+  return new Promise((resolve, reject) => {
+    fetch(host + '/account/events', {credentials: 'include'})
       .then(response => {
         if(!response.ok){
           reject({err: response.statusText});

@@ -88,6 +88,30 @@ export function createGroup(options){
   })
 }
 
+export function inviteToGroup(options){
+  console.log(options)
+  return new Promise((resolve, reject) => {
+    fetch(host + '/account/group/invite', {
+      method: 'post',
+      credentials: 'include',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        email: options.email,
+        groupId: options.groupId
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response.errors){
+        return reject(response);
+      }
+      return resolve(response);
+    })
+  })
+}
+
 export function getGroups(){
   return new Promise((resolve, reject) => {
     fetch(host + '/account/group', {credentials: 'include'})
@@ -183,5 +207,25 @@ export function getTasks(groupId) {
         }
         return response.json().then(resolve);
       })
+  })
+}
+
+export function postAction(options) {
+  console.log(options);
+  return new Promise((resolve, reject) => {
+    fetch(host + options.link + '/' +  options.type.toLowerCase(), {
+      method: 'post',
+      credentials: 'include',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response.errors){
+        return reject(response);
+      }
+      return resolve(response);
+    })
   })
 }

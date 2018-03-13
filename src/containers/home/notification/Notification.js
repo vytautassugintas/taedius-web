@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getNotifications, getEvents } from '../../../api';
+import { getNotifications, getEvents, postAction } from '../../../api';
 
 export default class Notifications extends Component {
   constructor(props){
@@ -30,21 +30,26 @@ export default class Notifications extends Component {
         })
       })
 
-      getEvents()
-        .then(events => {
-          console.log(events);
-          this.setState({
-            events: events,
-          })
+    getEvents()
+      .then(events => {
+        console.log(events);
+        this.setState({
+          events: events,
         })
-        .catch(err => this.setState({
-          events: [],
-        }))
-        .finally(() => {
-          this.setState({
-            isLoading: false
-          })
+      })
+      .catch(err => this.setState({
+        events: [],
+      }))
+      .finally(() => {
+        this.setState({
+          isLoading: false
         })
+      })
+  }
+
+  handleActionClick = action => {
+    postAction({link: action.link, type: action.type})
+      .then(ok => console.log)
   }
 
   render() {
@@ -72,6 +77,16 @@ export default class Notifications extends Component {
                 <div>
                   Events:
                   <p>{event.type}</p>
+                  {
+                    event.possibleActions.map(action => (
+                      <div>
+                        <button onClick={() => this.handleActionClick({link: event.actionLink, type: action})}>
+                          {action}
+                        </button>
+                      </div>
+                    )
+                    )
+                  }
                 </div>
               )
             )

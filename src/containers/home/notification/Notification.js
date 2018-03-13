@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Dropdown, Input, Button, Icon, Label, Header } from 'semantic-ui-react'
 import { getNotifications, getEvents, postAction } from '../../../api';
 
 export default class Notifications extends Component {
@@ -55,42 +56,33 @@ export default class Notifications extends Component {
   render() {
     const { isLoading, notifications, events } = this.state;
     
+    const opts = events.map(event => ({
+        key: event._id,
+        content: 
+        <div>
+          <Header 
+            icon='group' 
+            content={event.type === 'GroupInvite' ? 'Group Invite' : 'Something happended'}
+            subheader='You have been invited to the group'
+          />
+          <Button.Group widths='2'>
+            <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'decline'})} negative>Decline</Button>
+            <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'accept'})} positive>Accept</Button>
+          </Button.Group>
+        </div>,
+    }))
+
     return isLoading
       ? null
       : (
         <div>
-          {
-            notifications.length 
-              ? notifications.map(notif => 
-                  (
-                    <div>
-                      Notifs:
-                      <p>{notif.type}</p>
-                    </div>
-                  )
-                )
-              : null
-          }
-          {
-            events.map(event => 
-              (
-                <div>
-                  Events:
-                  <p>{event.type}</p>
-                  {
-                    event.possibleActions.map(action => (
-                      <div>
-                        <button onClick={() => this.handleActionClick({link: event.actionLink, type: action})}>
-                          {action}
-                        </button>
-                      </div>
-                    )
-                    )
-                  }
-                </div>
-              )
-            )
-          }
+          <Dropdown 
+            trigger={
+              <Label>
+                <Icon name='mail' /> {events.length}
+              </Label>
+            }
+            options={opts} pointing='top left' icon={null} />
         </div>
       );
   }

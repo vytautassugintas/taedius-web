@@ -13,7 +13,7 @@ class HomeContainer extends Component {
     this.state = {
       user: undefined,
       isLoading: true,
-      activeItem: ''
+      activeItem: 'home'
     }
   }
 
@@ -50,15 +50,19 @@ class HomeContainer extends Component {
     return isLoading
       ? null
       : (
-        <Container>
-          <button onClick={this.logout}>
-            Logout
-          </button>
-          <Auth />
-          <Notification />
-          <Route exact path="/home" component={GroupList} />
-          <Route path="/home/group/:id" component={Group} />
-        </Container>
+        <div>
+          <Menu pointing secondary>
+            <Notification />
+            <Menu.Menu position='right'>
+              <Menu.Item name='logout' active={activeItem === 'logout'} onClick={this.logout} />
+            </Menu.Menu>
+          </Menu>
+          <Container>
+            <Auth />
+            <Route exact path="/home" component={GroupList} />
+            <Route path="/home/group/:id" component={Group} />
+          </Container>
+        </div>
       );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dropdown, Input, Button, Icon, Label, Header } from 'semantic-ui-react'
+import { Dropdown, Input, Button, Icon, Label, Header, Menu } from 'semantic-ui-react'
 import { getNotifications, getEvents, postAction } from '../../../api';
 
 export default class Notifications extends Component {
@@ -15,22 +15,6 @@ export default class Notifications extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   componentDidMount(){
-    getNotifications()
-      .then(notifications => {
-        console.log(notifications);
-        this.setState({
-          notifications: notifications,
-        })
-      })
-      .catch(err => this.setState({
-        notifications: [],
-      }))
-      .finally(() => {
-        this.setState({
-          isLoading: false
-        })
-      })
-
     getEvents()
       .then(events => {
         console.log(events);
@@ -56,34 +40,51 @@ export default class Notifications extends Component {
   render() {
     const { isLoading, notifications, events } = this.state;
     
-    const opts = events.map(event => ({
+    let opts;
+
+    if (events.length) {
+      opts = events.map(event => ({
         key: event._id,
         content: 
-        <div>
-          <Header 
-            icon='group' 
-            content={event.type === 'GroupInvite' ? 'Group Invite' : 'Something happended'}
-            subheader='You have been invited to the group'
-          />
-          <Button.Group widths='2'>
-            <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'decline'})} negative>Decline</Button>
-            <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'accept'})} positive>Accept</Button>
-          </Button.Group>
-        </div>,
+          <div>
+            <Header 
+              icon='group' 
+              content={event.type === 'GroupInvite' ? 'Group Invite' : 'Something happended'}
+              subheader='You have been invited to the group'
+            />
+            <Button.Group widths='2'>
+              <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'decline'})} negative>Decline</Button>
+              <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'accept'})} positive>Accept</Button>
+            </Button.Group>
+          </div>
     }))
+    } else {
+      opts = [{
+        key: 1,
+        content:
+          <div>
+            <Header
+              content='Nothig happening'
+              subheader='Yep nothing here'
+            />
+          </div>
+      }]
+    };
+
+    
 
     return isLoading
       ? null
       : (
-        <div>
-          <Dropdown 
+        <Menu.Item>
+          <Dropdown
             trigger={
               <Label>
                 <Icon name='mail' /> {events.length}
               </Label>
             }
             options={opts} pointing='top left' icon={null} />
-        </div>
+        </Menu.Item>
       );
   }
 }

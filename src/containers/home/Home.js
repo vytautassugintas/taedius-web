@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
-import { Container, Menu } from 'semantic-ui-react'
+import { Container, Menu, Label, Icon } from 'semantic-ui-react'
 import { getAccount, logout } from '../../api';
 import Group from './group/Group';
 import GroupList from './group-list/GroupList';
@@ -51,10 +51,15 @@ class HomeContainer extends Component {
       ? null
       : (
         <div>
-          <Menu pointing secondary>
-            <Notification />
+          <Menu attached='top' secondary>
+            {/* <Menu.Item> */}
+              <Notification />
+            {/* </Menu.Item> */}
             <Menu.Menu position='right'>
-              <Menu.Item name='logout' active={activeItem === 'logout'} onClick={this.logout} />
+              <Menu.Item onClick={this.logout}>
+                <Icon name='log out' />
+                Log out
+              </Menu.Item>
             </Menu.Menu>
           </Menu>
           <Container>

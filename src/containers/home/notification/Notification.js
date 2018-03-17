@@ -46,7 +46,7 @@ export default class Notifications extends Component {
       opts = events.map(event => ({
         key: event._id,
         content: 
-          <div>
+          <Dropdown.Item>
             <Header 
               icon='group' 
               content={event.type === 'GroupInvite' ? 'Group Invite' : 'Something happended'}
@@ -56,7 +56,7 @@ export default class Notifications extends Component {
               <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'decline'})} negative>Decline</Button>
               <Button onClick={() => this.handleActionClick({link: event.actionLink, type: 'accept'})} positive>Accept</Button>
             </Button.Group>
-          </div>
+          </Dropdown.Item>
     }))
     } else {
       opts = [{
@@ -76,15 +76,17 @@ export default class Notifications extends Component {
     return isLoading
       ? null
       : (
-        <Menu.Item>
           <Dropdown
-            trigger={
-              <Label>
-                <Icon name='mail' /> {events.length}
-              </Label>
-            }
-            options={opts} pointing='top left' icon={null} />
-        </Menu.Item>
+            item
+            options={opts}
+            labeled
+            icon={false}
+            trigger={(
+              <span>
+                <Icon name='mail' /> {events.length.toString()}
+              </span>
+            )}>
+          </Dropdown>
       );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Button, Icon, List, Progress, Modal, Header, Form, Checkbox } from 'semantic-ui-react'
-import { addTask, getTasks, removeTask } from '../../../../api';
+import { addTask, getTasks, removeTask, askForTaskApproval } from '../../../../api';
 import ModalAddTask from '../modal-add-task/ModalAddTask';
 
 class Task extends Component {
@@ -53,6 +53,18 @@ class Task extends Component {
     })
   }
 
+  handleRequestApproveClick = (groupId, taskId) => {
+    askForTaskApproval({
+      groupId: groupId,
+      taskId: taskId
+    }).then(() => {
+      getTasks(this.props.groupId)
+      .then(result => this.setState({
+        tasks: result.tasks
+      }))
+    })
+  }
+
   render() {
     const { title, points, tasks, isModalOpen } = this.state;
 
@@ -79,6 +91,14 @@ class Task extends Component {
                     >
                     <Icon name='trash' />
                   </Button>
+                  <Button
+                    className='button--no-border'
+                    basic
+                    icon
+                    onClick={() => this.handleRequestApproveClick(this.props.groupId, task._id)}
+                    >
+                    <Icon color={task.status !== 'None' ? 'orange' : ''} name='checkmark' />
+                  </Button>
                 </List.Content>
                 <List.Content>
                   <List.Header 
@@ -86,7 +106,7 @@ class Task extends Component {
                     >
                     {task.title}
                   </List.Header>
-                  Points: {task.points} | Assignee: {task.assignee ? task.assignee : '-'}
+                  Points: {task.points} | Assignee: {task.assignee ? task.assignee.email : '-'}
                 </List.Content>
                 </List.Item>    
               ))

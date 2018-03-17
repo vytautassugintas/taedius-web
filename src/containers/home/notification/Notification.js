@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dropdown, Input, Button, Icon, Label, Header, Menu } from 'semantic-ui-react'
+import { Dropdown, Input, Button, Icon, Label, Header, Menu, Transition } from 'semantic-ui-react'
 import { getNotifications, getEvents, postAction } from '../../../api';
 
 export default class Notifications extends Component {
@@ -17,9 +17,9 @@ export default class Notifications extends Component {
   componentDidMount(){
     getEvents()
       .then(events => {
-        console.log(events);
         this.setState({
           events: events,
+          visible: !this.state.visible
         })
       })
       .catch(err => this.setState({
@@ -71,8 +71,6 @@ export default class Notifications extends Component {
       }]
     };
 
-    
-
     return isLoading
       ? null
       : (
@@ -83,7 +81,10 @@ export default class Notifications extends Component {
             icon={false}
             trigger={(
               <span>
-                <Icon name='mail' /> {events.length.toString()}
+                <Icon name='mail' /> 
+                  <Label circular>
+                    {events.length.toString()}
+                  </Label>
               </span>
             )}>
           </Dropdown>

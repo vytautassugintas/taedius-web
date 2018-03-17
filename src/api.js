@@ -136,6 +136,18 @@ export function getGroup(groupId) {
   })
 }
 
+export function randomAssign(groupId) {
+  return new Promise((resolve, reject) => {
+    fetch(host + '/group/' + groupId + '/assign/random', {credentials: 'include'})
+      .then(response => {
+        if(!response.ok){
+          return reject({err: response.statusText});
+        }
+        return response.json().then(resolve);
+      })
+  })
+}
+
 export function deleteGroup(groupId) {
   return new Promise((resolve, reject) => {
     fetch(host + '/group/' + groupId, {
@@ -178,6 +190,29 @@ export function addTask(options) {
 export function removeTask(options) {
   return new Promise((resolve, reject) => {
     fetch(host + '/group/task/remove', {
+      method: 'post',
+      credentials: 'include',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        groupId: options.groupId,
+        taskId: options.taskId
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      if(response.errors){
+        return reject(response);
+      }
+      return resolve(response);
+    })
+  })
+}
+
+export function askForTaskApproval(options) {
+  return new Promise((resolve, reject) => {
+    fetch(host + '/group/task/request', {
       method: 'post',
       credentials: 'include',
       headers: new Headers({

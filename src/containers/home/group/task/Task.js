@@ -97,7 +97,7 @@ class Task extends Component {
                     icon
                     onClick={() => this.handleRequestApproveClick(this.props.groupId, task._id)}
                     >
-                    <Icon color={task.status !== 'None' ? 'orange' : ''} name='checkmark' />
+                    <Icon color={task.status !== 'None' ? 'orange' : 'grey'} name='checkmark' />
                   </Button>
                 </List.Content>
                 <List.Content>

@@ -52,9 +52,7 @@ class HomeContainer extends Component {
       : (
         <div>
           <Menu attached='top' secondary>
-            {/* <Menu.Item> */}
-              <Notification />
-            {/* </Menu.Item> */}
+            <Notification />
             <Menu.Menu position='right'>
               <Menu.Item onClick={this.logout}>
                 <Icon name='log out' />

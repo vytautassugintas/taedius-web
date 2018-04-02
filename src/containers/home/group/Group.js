@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { getGroup, inviteToGroup, randomAssign } from "../../../api";
-import { Input, Button, Icon, Header, Segment, List, Accordion } from 'semantic-ui-react'
+import { Input, Button, Icon, Header, Segment, List, Accordion, Form } from 'semantic-ui-react'
 import Task from "./task/Task";
 
 class Group extends Component {
@@ -78,29 +78,28 @@ class Group extends Component {
                   )})
                 }
               </List>
+              <Form>
+                <Input
+                  fluid
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChange}
+                  placeholder="Memer email" />
+                <Button
+                  fluid
+                  icon
+                  positive
+                  labelPosition="left"
+                  onClick={this.handleInviteClick}>
+                  <Icon name="plus" />
+                  Invite
+                </Button>
+              </Form>
+              
             </Accordion.Content>
           </Accordion>
           </Header.Subheader>
         </Header>
-        <Input
-          fluid
-          name="email"
-          value={this.state.email}
-          onChange={this.handleInputChange}
-          placeholder="Memer email"
-        />
-        <div className="margin-top--md">
-          <Button
-            fluid
-            icon
-            positive
-            labelPosition="left"
-            onClick={this.handleInviteClick}
-          >
-            <Icon name="plus" />
-            Invite
-          </Button>
-        </div>
         <div className="margin-top--md">
           <Button
             fluid

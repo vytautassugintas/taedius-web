@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, Input, Button, Icon, Label, Header, Menu, Transition } from 'semantic-ui-react'
 import { getNotifications, getEvents, postAction } from '../../../api';
-import openSocket from 'socket.io-client';
+import { onEvent } from '../../../socket';
 
 export default class Notifications extends Component {
   constructor(props){
@@ -11,9 +11,11 @@ export default class Notifications extends Component {
       notifications: [],
       events: []
     }
-  }
 
-  socket = openSocket('http://localhost:3000');
+    onEvent(data => {
+      console.log(data);
+    })
+  }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
